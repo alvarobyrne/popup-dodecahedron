@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Starter Boolean</title>
+<script src="dat.gui.js"></script>
+<script src="clipper.js"></script>
+  </head>
+  <body>
+    <div id="svgcontainer"></div>
+    <script>
+        const chokidar = require('chokidar');
+        chokidar.watch(['clipper-example.html']).on('change',()=>{location.reload(); });
+
+var subj_paths1 = [[{X:10,Y:10},{X:110,Y:10},{X:110,Y:110},{X:10,Y:110}],
+                  [{X:20,Y:20},{X:20,Y:100},{X:100,Y:100},{X:100,Y:20}]]; 
+var subj_paths2 = [
+    [{X:10,Y:10},{X:110,Y:10},{X:110,Y:110},{X:10,Y:110}],
+]; 
+var clip_paths = [[{X:50,Y:50},{X:150,Y:50},{X:150,Y:150},{X:50,Y:150}],
+                  [{X:60,Y:60},{X:60,Y:140},{X:140,Y:140},{X:140,Y:60}]];
+
+var cpr = new ClipperLib.Clipper();
+var subj_paths;
+subj_paths=subj_paths2;
+subj_paths=subj_paths1;
+
+var scale = 100;
+ClipperLib.JS.ScaleUpPaths(subj_paths, scale);
+ClipperLib.JS.ScaleUpPaths(clip_paths, scale);
+
+cpr.AddPaths(subj_paths, ClipperLib.PolyType.ptSubject, true);  // true means closed path
+cpr.AddPaths(clip_paths, ClipperLib.PolyType.ptClip, true);
+
+var solution_paths = new ClipperLib.Paths();
+console.log('solution_paths: ', solution_paths);
+const clipTypes = ClipperLib.ClipType;
+console.log('clipTypes: ', clipTypes);
+const polyFillTypes = ClipperLib.PolyFillType
+console.log('polyFillTypes: ', polyFillTypes);
+let clipType;
+clipType = ClipperLib.ClipType.ctIntersection;
+clipType = ClipperLib.ClipType.ctDifference;
+clipType = ClipperLib.ClipType.ctXor;
+clipType = ClipperLib.ClipType.ctUnion;
+const subjFillType = ClipperLib.PolyFillType.pftNonZero;
+const clipFillType = ClipperLib.PolyFillType.pftNonZero;
+var succeeded = cpr.Execute(clipType, solution_paths,subjFillType , clipFillType);
+console.log('succeeded: ', succeeded);
+
+// console.log(JSON.stringify(solution_paths));
+
+// Scale down coordinates and draw ...
+var svg = '<svg style="background-color:#dddddd" width="160" height="160">';
+svg += '<path stroke="black" fill="yellow" stroke-width="2" d="' + paths2string(solution_paths, scale) + '"/>';
+svg += '</svg>';
+document.getElementById("svgcontainer").innerHTML = svg;
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+var svg2 = document.createElementNS(SVG_NS,'svg');
+svg2.setAttribute('xmlns',SVG_NS)
+svg2.setAttribute('id','svg2')
+svg2.setAttribute('width','600')
+svg2.setAttribute('height','600')
+document.body.appendChild(svg2)
+var subject = document.createElementNS(SVG_NS,'path');
+var clip = document.createElementNS(SVG_NS,'path');
+svg2.appendChild(subject);
+svg2.appendChild(clip);
+subject.setAttribute('fill','red')
+subject.setAttribute('stroke','black')
+clip.setAttribute('stroke','black')
+clip.setAttribute('fill','green')
+const subjectString= paths2string(subj_paths,100)
+const clipString= paths2string(clip_paths,100)
+console.log('subjectString: ', subjectString);
+subject.setAttribute('d',subjectString)
+clip.setAttribute('d',clipString)
+
+
+// Converts Paths to SVG path string
+// and scales down the coordinates
+function paths2string (paths, scale) {
+  var svgpath = "", i, j;
+  if (!scale) scale = 1;
+  for(i = 0; i < paths.length; i++) {
+    console.log('i: ', i);
+    for(j = 0; j < paths[i].length; j++){
+      if (!j) svgpath += "M";
+      else svgpath += "L";
+      svgpath += (paths[i][j].X / scale) + ", " + (paths[i][j].Y / scale);
+    }
+    svgpath += "Z";
+  }
+  if (svgpath=="") svgpath = "M0,0";
+  return svgpath;
+}
+var paths = [[{"X":10,"Y":10},{"X":110,"Y":10},{"X":110,"Y":110},{"X":10,"Y":110}]];
+console.log(JSON.stringify(paths));
+ClipperLib.Clipper.ReversePaths(paths);
+console.log(JSON.stringify(paths));
+dat =  new dat.GUI;
+dat.width = 500;
+dat.add({f:()=>{location.href = "index.html"}},'f').name("index.html")
+dat.add({f:()=>{location.href = "http://jsclipper.sourceforge.net/6.4.2.2/index.html?p=sources_as_text/starter_boolean.txt"}},'f').name("example taken from");
+dat.add({f:()=>{shell.openExternal("http://jsclipper.sourceforge.net/6.4.2.2/index.html?p=sources_as_text/starter_boolean.txt")}},'f').name("example taken from (external, chrome)");
+var shell = nw.Shell;
+    </script>
+  </body>
+</html>
