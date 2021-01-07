@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chokidar": "^3.4.3",
-    "dat.gui": "^0.7.7",
-    "js-clipper": "^1.0.1"
+    "chokidar": "^3.4.3"
   }
 }
