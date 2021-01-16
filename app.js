@@ -62,6 +62,7 @@ function update() {
     popupGroupMain.appendChild(topFaceGroup)
     const innerSideLengthPX = to_px(innerSideLengthMM);
     const radiusMM = innerSideLengthMM/Math.sin(beta);
+    polygonRadiusMM = radiusMM.toFixed(2);
     const radiusPX = to_px(radiusMM);
     const innerRadiusPX = to_px(innerRadiusMM);
     const outerSidePx = to_px(innerSideLengthMM + thicknessMM * tanBeta);
@@ -265,7 +266,18 @@ function update() {
     //////////////////////////////////
     const bottomFaceGroup = topFaceGroup.cloneNode(true);
     popupGroupMain.appendChild(bottomFaceGroup);
-    bottomFaceGroup.setAttribute('transform',`translate(${0},${horizontalSeparationPX+20})`)
+    bottomFaceGroup.setAttribute('transform',`translate(${0},${horizontalSeparationPX+20})`);
+    let attachmentRadiusPX= to_px(attachmentRadiusMM)
+    for (let index = 0; index < 5; index++) {
+        const attachmentHole = document.createElementNS(SVG_NS, 'circle');
+        bottomFaceGroup.appendChild(attachmentHole);
+        attachmentHole.setAttribute('fill','none')
+        attachmentHole.setAttribute('stroke','red')
+        attachmentHole.setAttribute('cx',0)
+        attachmentHole.setAttribute('cy',0)
+        attachmentHole.setAttribute('r',to_px(1.5))
+        attachmentHole.setAttribute('transform',`rotate(${36+72*index}) translate(${attachmentRadiusPX})`)
+    }
 }
 function arrayToPath(points,isClosed=true){
     let dString = ["M "+points[0][0]+" "+points[0][1]];
