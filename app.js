@@ -58,8 +58,8 @@ function getPolygonPointsRadius(sides,radius, factor = 1) {
 function update() {
     cpr.Clear();
     popupGroupMain.innerHTML = "";
-    const popupGroup = document.createElementNS(SVG_NS, 'g');
-    popupGroupMain.appendChild(popupGroup)
+    const topFaceGroup = document.createElementNS(SVG_NS, 'g');
+    popupGroupMain.appendChild(topFaceGroup)
     const innerSideLengthPX = to_px(innerSideLengthMM);
     const radiusMM = innerSideLengthMM/Math.sin(beta);
     const radiusPX = to_px(radiusMM);
@@ -107,12 +107,12 @@ function update() {
         pentagon.setAttribute('d', pentagonPathString)
         pentagon.setAttribute('fill', 'none')
         pentagon.setAttribute('stroke', 'black')
-        popupGroup.appendChild(pentagon);
+        topFaceGroup.appendChild(pentagon);
         
         const barString = paths2string(barsData);
         const bar = document.createElementNS(SVG_NS, 'path');
         bar.classList.add('guide')
-        popupGroup.appendChild(bar);
+        topFaceGroup.appendChild(bar);
         bar.setAttribute('d',barString);
         bar.setAttribute('fill','none');
         bar.setAttribute('stroke','black');
@@ -129,14 +129,14 @@ function update() {
     const clipFillType = ClipperLib.PolyFillType.pftNonZero;
     var succeeded = cpr.Execute(clipType, solution_paths,subjFillType , clipFillType);
     const pentaCross = document.createElementNS(SVG_NS, 'path');
-    popupGroup.appendChild(pentaCross);
+    topFaceGroup.appendChild(pentaCross);
     const crossString = paths2string(solution_paths);
     pentaCross.setAttribute('d',crossString);
     pentaCross.setAttribute('fill','none');
     pentaCross.setAttribute('stroke','red');
     ////////////////////////////////
     const innerHole = document.createElementNS(SVG_NS, 'circle');
-    popupGroup.appendChild(innerHole);
+    topFaceGroup.appendChild(innerHole);
     innerHole.setAttribute('cx',0)
     innerHole.setAttribute('cy',0)
     innerHole.setAttribute('fill','none')
@@ -154,7 +154,7 @@ function update() {
     const hingeTransform = `rotate(90) translate(${-hingeWidthPX * 0.5},${-hingeHeightPX * 0.5})`;
     hingeGroup.setAttribute('transform',hingeTransform)
     const hingeRect = document.createElementNS(SVG_NS, 'rect');
-    popupGroup.appendChild(hingeGroup);
+    topFaceGroup.appendChild(hingeGroup);
     hingeGroup.appendChild(hingeRect);
     hingeRect.classList.add('guide')
     hingeRect.setAttribute('x',0)
@@ -188,7 +188,7 @@ function update() {
         const hingePair = document.createElementNS(SVG_NS, 'g');
         const clone0 = hingeGroup.cloneNode(true);
         const clone1 = hingeGroup.cloneNode(true);
-        popupGroup.appendChild(hingePair);
+        topFaceGroup.appendChild(hingePair);
         hingePair.appendChild(clone0);
         hingePair.appendChild(clone1);
         clone0.setAttribute('transform',t0)
@@ -206,6 +206,35 @@ function update() {
     popupGroupMain.appendChild(sideFaces);
     sideFaces.appendChild(sideFace);
     sideFace.appendChild(pentagon);
+    //////////////////////////////////
+    const centerCircle = document.createElementNS(SVG_NS, 'circle');
+    sideFace.appendChild(centerCircle);
+    centerCircle.setAttribute('fill','none')
+    centerCircle.setAttribute('stroke','black')
+    centerCircle.setAttribute('cx',0)
+    centerCircle.setAttribute('cy',0)
+    centerCircle.setAttribute('r',to_px(0.5))
+    centerCircle.classList.add('guide')
+    //////////////////////////////////
+    const springHole1 = document.createElementNS(SVG_NS, 'rect');
+    sideFace.appendChild(springHole1);
+    springHole1.setAttribute('fill','none')
+    springHole1.setAttribute('stroke','red')
+    springHole1.setAttribute('y',to_px(-3))
+    springHole1.setAttribute('x',to_px(-1))
+    springHole1.setAttribute('height',to_px(6))
+    springHole1.setAttribute('width',to_px(2))
+    springHole1.setAttribute('transform',`rotate(36) translate(${polygonHeightPX},0)`)
+    const springHole2 = document.createElementNS(SVG_NS, 'rect');
+    sideFace.appendChild(springHole2);
+    springHole2.setAttribute('fill','none')
+    springHole2.setAttribute('stroke','red')
+    springHole2.setAttribute('y',to_px(-3))
+    springHole2.setAttribute('x',to_px(-1))
+    springHole2.setAttribute('height',to_px(6))
+    springHole2.setAttribute('width',to_px(2))
+    springHole2.setAttribute('transform',`rotate(-36) translate(${polygonHeightPX},0)`)
+    //////////////////////////////////
     const notchedFace = new NotchedFace(popupGroupMain, 5, isSingleNotch);
     let notchDepthPX= to_px(notchDepthMM)
     let notchSeparationPX= to_px(notchSeparationMM)
@@ -234,9 +263,9 @@ function update() {
     //////////////////////////////////
     hingeGroup.remove();
     //////////////////////////////////
-    const bottomFace = popupGroup.cloneNode(true);
-    popupGroupMain.appendChild(bottomFace);
-    bottomFace.setAttribute('transform',`translate(${0},${horizontalSeparationPX+20})`)
+    const bottomFaceGroup = topFaceGroup.cloneNode(true);
+    popupGroupMain.appendChild(bottomFaceGroup);
+    bottomFaceGroup.setAttribute('transform',`translate(${0},${horizontalSeparationPX+20})`)
 }
 function arrayToPath(points,isClosed=true){
     let dString = ["M "+points[0][0]+" "+points[0][1]];

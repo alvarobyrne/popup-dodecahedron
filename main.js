@@ -39,6 +39,7 @@ const originX = 200;
 const originY = 200;
 popupGroupMain.setAttribute('transform', `translate(${originX},${originY})`)
 const gui = new dat.GUI();
+gui.add(location,'reload');
 const guiExport = gui.addFolder('Export');
 const guiMain = gui.addFolder('Main');
 guiExport.add(this,'preExportSVG')
@@ -84,11 +85,11 @@ var hingeAirXMM = 1.5;
 var hingeAirYMM = 0.3;//-(thicknessMM-hingeWidthMM)*0.5;
 var hingeHoleAirYMM = 0;
 var isSingleNotch;
-isSingleNotch= false;
 isSingleNotch= true;
+isSingleNotch= false;
 var notchDepthMM= 4;
-var notchSeparationMM= 10;
-var materialWidthMM= 3;
+var notchSeparationMM= 7.5;
+var materialWidthMM= 2.9;
 update()
 
 
@@ -105,9 +106,9 @@ guiMain.add(this, 'innerHoleRadiusMM', 0.5, 10, 0.5).onChange(update);
 const guiNotch = gui.addFolder('Notch');
 guiNotch.open();
 guiNotch.add(this, 'isSingleNotch').onChange(update);
-guiNotch.add(this, 'notchSeparationMM', 0.5, 40, 0.5).onChange(update);
+guiNotch.add(this, 'notchSeparationMM', 0.5, 40, 0.1).onChange(update);
 guiNotch.add(this, 'notchDepthMM', 0.5, 40, 0.5).onChange(update);
-guiNotch.add(this, 'materialWidthMM', 0.5, 40, 0.5).onChange(update);
+guiNotch.add(this, 'materialWidthMM', 0.5, 40, 0.1).onChange(update);
 const guiHinge = gui.addFolder('hinge');
 // guiHinge.open();
 guiHinge.add(this, 'hingeWidthMM', 0.5, 40, 0.5).onChange(update);
@@ -123,4 +124,4 @@ var intervalID = setInterval(() => {
     update();
 }, 2000);
 */
-gui.close();
+// gui.close();

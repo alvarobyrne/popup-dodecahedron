@@ -111,7 +111,9 @@ class NotchedFace{
                 {X:h11,Y:depth},
                 {X:h11,Y:0},
                 {X:l,Y:0}
-            ]
+            ];
+            const minSep = this.notchPrecompute(s, gap)/mmppx;
+            console.log('minSep: ', minSep);
         }
         const theta = this.theta;
         const degreePerRadian = Math.PI / 180;
