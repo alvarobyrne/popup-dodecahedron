@@ -96,7 +96,7 @@ function update() {
         })
         barsData.push(bar_data)
     }
-    const pentagonPathString = paths2string([pointsInner,pointsOuter]);
+    const pentagonPathString = paths2string([pointsOuter]);
     
     if(isShowingOriginals){
         const pentagonPathString = paths2string([pointsInner,pointsOuter]);
@@ -206,6 +206,16 @@ function update() {
     popupGroupMain.appendChild(sideFaces);
     sideFaces.appendChild(sideFace);
     sideFace.appendChild(pentagon);
+    const notchedFace = new NotchedFace(popupGroupMain, 5, isSingleNotch);
+    let notchDepthPX= to_px(notchDepthMM)
+    let notchSeparationPX= to_px(notchSeparationMM)
+    let materialWidthPX= to_px(materialWidthMM)
+    notchedFace.setNotch(notchSeparationPX)
+    notchedFace.setForm(5,innerSideLengthPX)
+    notchedFace.update(notchDepthPX,materialWidthPX)
+    // notchedFace.setPosition(horizontalSeparationPX,0)
+    sideFace.appendChild(notchedFace.singleFacesGroup);
+    //////////////////////////////////
     const hingePair = document.createElementNS(SVG_NS, 'g');
     const clone0 = hingeGroup.cloneNode(true);
     const clone1 = hingeGroup.cloneNode(true);
@@ -227,5 +237,14 @@ function update() {
     const bottomFace = popupGroup.cloneNode(true);
     popupGroupMain.appendChild(bottomFace);
     bottomFace.setAttribute('transform',`translate(${0},${horizontalSeparationPX+20})`)
-
+}
+function arrayToPath(points,isClosed=true){
+    let dString = ["M "+points[0][0]+" "+points[0][1]];
+    for (let index = 1; index < points.length; index++) {
+        const point = points[index];
+        const pointString = "L " + point[0] + " " + point[1];
+        dString.push(pointString)
+    }
+    if(isClosed) dString = dString.join(" ")+" Z";
+    return dString
 }

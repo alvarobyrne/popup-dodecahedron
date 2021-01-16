@@ -2,13 +2,14 @@ const chokidar = require('chokidar');
 chokidar.watch(['index.html'
     , 'main.js'
     , 'app.js'
+    , 'NotchedFace.js'
 ]).on('change', () => { location.reload(); });
 const SVG_NS = "http://www.w3.org/2000/svg";
 var svg = document.createElementNS(SVG_NS, 'svg');
 
 svg.setAttribute('xmlns', SVG_NS)
 svg.setAttribute('id', 'svg')
-svg.setAttribute('width', '600')
+svg.setAttribute('width', '800')
 svg.setAttribute('height', '600')
 document.body.appendChild(svg)
 const ClipperLib = require('js-clipper');
@@ -38,9 +39,11 @@ const originX = 200;
 const originY = 200;
 popupGroupMain.setAttribute('transform', `translate(${originX},${originY})`)
 const gui = new dat.GUI();
-gui.add(this,'preExportSVG')
-gui.add(this,'revertPreExportSVG')
-gui.add({
+const guiExport = gui.addFolder('Export');
+const guiMain = gui.addFolder('Main');
+guiExport.add(this,'preExportSVG')
+guiExport.add(this,'revertPreExportSVG')
+guiExport.add({
     f: () => {
         preExportSVG();
         exportSVG();
@@ -75,27 +78,38 @@ var innerHoleRadiusMM = 1.5;
 var amountPointsInner = 10;
 var hingeWidthMM = 25.4 / 2;
 var hingeHeightMM = (hingeWidthMM-2) / 2;
-console.log('hingeHeightMM: ', hingeHeightMM);
 var hingeHoleSeparationMM = 8;
 var hingeHoleRadiusMM = 1.1;
 var hingeAirXMM = 1.5;
-var hingeAirYMM = 0.8;//-(thicknessMM-hingeWidthMM)*0.5;
+var hingeAirYMM = 0.3;//-(thicknessMM-hingeWidthMM)*0.5;
 var hingeHoleAirYMM = 0;
+var isSingleNotch;
+isSingleNotch= false;
+isSingleNotch= true;
+var notchDepthMM= 4;
+var notchSeparationMM= 10;
+var materialWidthMM= 3;
 update()
 
 
 // console.log('barString: ', barString);
 
 // cpr.AddPaths(subj_paths, ClipperLib.PolyType.ptSubject, true);  // true means closed path
-gui.add(this, 'innerSideLengthMM', 0, 60, 0.5).onChange(update)
-gui.add(this, 'crossThicknessMM', 1, 60, 0.5).onChange(update)
-gui.add(this, 'thicknessMM', hingeHeightMM, 60, 0.5).onChange(update)
-gui.add(this, 'isShowingOriginals').onChange(update);
-gui.add(this, 'innerRadiusMM', 1, 30).onChange(update);
-gui.add(this, 'amountPointsInner', 3, 30, 1).onChange(update);
-gui.add(this, 'innerHoleRadiusMM', 0.5, 10, 0.5).onChange(update);
+guiMain.add(this, 'innerSideLengthMM', 0, 60, 0.5).onChange(update)
+guiMain.add(this, 'crossThicknessMM', 1, 60, 0.5).onChange(update)
+guiMain.add(this, 'thicknessMM', hingeHeightMM, 60, 0.5).onChange(update)
+guiMain.add(this, 'isShowingOriginals').onChange(update);
+guiMain.add(this, 'innerRadiusMM', 1, 30).onChange(update);
+guiMain.add(this, 'amountPointsInner', 3, 30, 1).onChange(update);
+guiMain.add(this, 'innerHoleRadiusMM', 0.5, 10, 0.5).onChange(update);
+const guiNotch = gui.addFolder('Notch');
+guiNotch.open();
+guiNotch.add(this, 'isSingleNotch').onChange(update);
+guiNotch.add(this, 'notchSeparationMM', 0.5, 40, 0.5).onChange(update);
+guiNotch.add(this, 'notchDepthMM', 0.5, 40, 0.5).onChange(update);
+guiNotch.add(this, 'materialWidthMM', 0.5, 40, 0.5).onChange(update);
 const guiHinge = gui.addFolder('hinge');
-guiHinge.open();
+// guiHinge.open();
 guiHinge.add(this, 'hingeWidthMM', 0.5, 40, 0.5).onChange(update);
 guiHinge.add(this, 'hingeHeightMM', 0.5, 40, 0.5).onChange(update);
 guiHinge.add(this, 'hingeHoleRadiusMM', 0.5, 40, 0.5).onChange(update);
@@ -109,3 +123,4 @@ var intervalID = setInterval(() => {
     update();
 }, 2000);
 */
+gui.close();
