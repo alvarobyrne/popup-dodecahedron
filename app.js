@@ -97,7 +97,13 @@ function update() {
         })
         barsData.push(bar_data)
     }
-    const pentagonPathString = paths2string([pointsOuter]);
+    var pentagonSidesPoints;
+    if(isNotchedFace){
+        pentagonSidesPoints = [pointsOuter]
+    }else{
+        pentagonSidesPoints = [pointsInner,pointsOuter]
+    }
+    const pentagonPathString = paths2string(pentagonSidesPoints);
     
     if(isShowingOriginals){
         const pentagonPathString = paths2string([pointsInner,pointsOuter]);
@@ -236,15 +242,20 @@ function update() {
     springHole2.setAttribute('width',to_px(2))
     springHole2.setAttribute('transform',`rotate(-36) translate(${polygonHeightPX},0)`)
     //////////////////////////////////
-    const notchedFace = new NotchedFace(popupGroupMain, 5, isSingleNotch);
-    let notchDepthPX= to_px(notchDepthMM)
-    let notchSeparationPX= to_px(notchSeparationMM)
-    let materialWidthPX= to_px(materialWidthMM)
-    notchedFace.setNotch(notchSeparationPX)
-    notchedFace.setForm(5,innerSideLengthPX)
-    notchedFace.update(notchDepthPX,materialWidthPX)
-    // notchedFace.setPosition(horizontalSeparationPX,0)
-    sideFace.appendChild(notchedFace.singleFacesGroup);
+    if(isNotchedFace){
+
+        const notchedFace = new NotchedFace(popupGroupMain, 5, isSingleNotch);
+        let notchDepthPX= to_px(notchDepthMM)
+        let notchSeparationPX= to_px(notchSeparationMM)
+        let materialWidthPX= to_px(materialWidthMM)
+        notchedFace.setNotch(notchSeparationPX)
+        notchedFace.setForm(5,innerSideLengthPX)
+        notchedFace.update(notchDepthPX,materialWidthPX)
+        // notchedFace.setPosition(horizontalSeparationPX,0)
+        sideFace.appendChild(notchedFace.singleFacesGroup);
+    }else{
+
+    }
     //////////////////////////////////
     const hingePair = document.createElementNS(SVG_NS, 'g');
     const clone0 = hingeGroup.cloneNode(true);
