@@ -187,10 +187,13 @@ function update() {
     let halfSide = innerSideLengthPX * 0.5;
     const airXPX = to_px(thicknessMM * Math.tan(beta)+hingeAirXMM)
     const airYPX = to_px(hingeAirYMM)
+    const airSideYPX = to_px(hingeAirSidesYMM)
     halfSide-=airXPX;
 
     const t0 = hingeTransform + `translate(${+halfSide},${airYPX})`;
     const t1 = hingeTransform + `translate(${-halfSide},${airYPX})`;
+    const t1Sides = hingeTransform + `translate(${-halfSide},${airSideYPX})`;
+    const t0Sides = hingeTransform + `translate(${+halfSide},${airSideYPX})`;
     for (let index = 0; index < 5; index++) {
         const hingePair = document.createElementNS(SVG_NS, 'g');
         const clone0 = hingeGroup.cloneNode(true);
@@ -263,8 +266,8 @@ function update() {
     sideFace.append(hingePair);
     hingePair.appendChild(clone0);
     hingePair.appendChild(clone1);
-    clone0.setAttribute('transform',t0)
-    clone1.setAttribute('transform',t1)
+    clone0.setAttribute('transform',t0Sides)
+    clone1.setAttribute('transform',t1Sides)
     //////////////////////////////////
     hingePair.setAttribute('transform',` translate(${-polygonHeightPX},0)`)
     for (let index = 0; index < 9; index++) {
