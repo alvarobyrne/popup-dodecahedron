@@ -96,6 +96,7 @@ var notchSeparationMM= 7.5;
 var materialWidthMM= 2.9;
 var attachmentRadiusMM= 20;
 var polygonRadiusMM ='';
+var springHolePositionMM = 0;
 update()
 
 
@@ -128,6 +129,7 @@ guiHinge.add(this, 'hingeAirYMM', -5, 5, 0.1).onChange(update);
 guiHingeSides.add(this, 'hingeAirSidesYMM', 0, 40, 0.1).onChange(update);
 guiHinge.add(this, 'hingeHoleAirYMM', -2, 2, 0.1).onChange(update);
 gui.add(this, 'attachmentRadiusMM', 0, 60, 0.1).onChange(update);
+gui.add(this, 'springHolePositionMM', 0, 60, 0.1).onChange(update);
 gui.add(this, 'polygonRadiusMM').listen()
 /*
 var intervalID = setInterval(() => {

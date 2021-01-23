@@ -226,6 +226,7 @@ function update() {
     centerCircle.setAttribute('r',to_px(0.5))
     centerCircle.classList.add('guide')
     //////////////////////////////////
+    let springHolePositionPX = to_px(springHolePositionMM);
     const springHole1 = document.createElementNS(SVG_NS, 'rect');
     sideFace.appendChild(springHole1);
     springHole1.setAttribute('fill','none')
@@ -234,7 +235,7 @@ function update() {
     springHole1.setAttribute('x',to_px(-1))
     springHole1.setAttribute('height',to_px(6))
     springHole1.setAttribute('width',to_px(2))
-    springHole1.setAttribute('transform',`rotate(36) translate(${polygonHeightPX},0)`)
+    springHole1.setAttribute('transform',`rotate(36) translate(${polygonHeightPX},${-springHolePositionPX})`)
     const springHole2 = document.createElementNS(SVG_NS, 'rect');
     sideFace.appendChild(springHole2);
     springHole2.setAttribute('fill','none')
@@ -243,7 +244,7 @@ function update() {
     springHole2.setAttribute('x',to_px(-1))
     springHole2.setAttribute('height',to_px(6))
     springHole2.setAttribute('width',to_px(2))
-    springHole2.setAttribute('transform',`rotate(-36) translate(${polygonHeightPX},0)`)
+    springHole2.setAttribute('transform',`rotate(-36) translate(${polygonHeightPX},${springHolePositionPX})`)
     //////////////////////////////////
     if(isNotchedFace){
 
