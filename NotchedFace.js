@@ -181,3 +181,83 @@ class NotchedFace{
         contrlrNotchD.updateDisplay();
     }
 }
+class NotchedSide{
+    constructor(l,svg){
+        var notchD = 40;
+        var g = 10;
+        var s = 20;
+        const depth   = s;
+        const gHalves = g   * 0.5;
+        let modelPoints = [];
+        let data = [];
+        this.isSingleNotch=true;
+        this.isSingleNotch=false;
+        if(this.isSingleNotch){
+            let midLeft = l * 0.5 - gHalves;
+            let midRight = l * 0.5 + gHalves;
+            modelPoints = [
+                {X:0,Y:0},
+                {X:midLeft,Y:0},
+                {X:midLeft,Y:depth},
+                {X:midRight,Y:depth},
+                {X:midRight,Y:0},
+                {X:l,Y:0}
+            ]
+            data = [modelPoints,
+                [{X:midLeft,Y:0},
+                {X:midLeft,Y:-depth},
+                {X:midRight,Y:-depth},
+                {X:midRight,Y:0},
+            ]]
+        }else{
+            const dToVertex = notchD;
+            const h0      = dToVertex;
+            const h00     = h0  - gHalves;
+            const h01     = h0  + gHalves;
+            const h1      = l   - dToVertex;
+            const h10     = h1  - gHalves;
+            const h11     = h1  + gHalves;
+            modelPoints = [
+                {X:0,Y:0},
+                {X:h00,Y:0},
+                {X:h00,Y:depth},
+                {X:h01,Y:depth},
+                {X:h01,Y:0},
+                {X:h10,Y:0},
+                {X:h10,Y:depth},
+                {X:h11,Y:depth},
+                {X:h11,Y:0},
+                {X:l,Y:0}
+            ];
+            // const minSep = this.notchPrecompute(s, gap)/mmppx;
+            // console.log('minSep: ', minSep);
+            data = [modelPoints,[
+                {X:h00,Y:0},
+                {X:h00,Y:-depth},
+                {X:h01,Y:-depth},
+                {X:h01,Y:0}
+            ],
+                [
+                {X:h10,Y:0},
+                {X:h10,Y:-depth},
+                {X:h11,Y:-depth},
+                {X:h11,Y:0}]
+            ]
+        }
+        modelPoints
+        console.log("modelPoints", modelPoints)
+        let sidePathString = paths2string(data,false)
+        console.log("sidePathString", sidePathString)
+        var gr = document.createElementNS("http://www.w3.org/2000/svg",'g')
+        svg.appendChild(gr);
+        var path = document.createElementNS("http://www.w3.org/2000/svg",'path')
+        gr.appendChild(path);
+        path.setAttribute('d',sidePathString);
+        path.setAttribute('fill','none');
+        path.setAttribute('stroke','red');
+
+    }
+    update(){
+
+    }
+}

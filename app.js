@@ -10,7 +10,7 @@ function rotate2D(vector, angle) {
         Y: matrix[2] * vector.X + matrix[3] * vector.Y
     }
 }
-function paths2string(paths, scale) {
+function paths2string(paths, isClosing=true,scale) {
     var svgpath = "", i, j;
     if (!scale) scale = 1;
     for (i = 0; i < paths.length; i++) {
@@ -19,7 +19,7 @@ function paths2string(paths, scale) {
             else svgpath += "L";
             svgpath += (paths[i][j].X / scale) + ", " + (paths[i][j].Y / scale);
         }
-        svgpath += "Z";
+        if(isClosing)svgpath += "Z";
     }
     if (svgpath == "") svgpath = "M0,0";
     return svgpath;
@@ -299,6 +299,16 @@ function arrayToPath(points,isClosed=true){
     for (let index = 1; index < points.length; index++) {
         const point = points[index];
         const pointString = "L " + point[0] + " " + point[1];
+        dString.push(pointString)
+    }
+    if(isClosed) dString = dString.join(" ")+" Z";
+    return dString
+}
+function arrayToPath2(points,isClosed=true){
+    let dString = ["M "+points[0].X+" "+points[0].Y];
+    for (let index = 1; index < points.length; index++) {
+        const point = points[index];
+        const pointString = "L " + point.X + " " + point.Y;
         dString.push(pointString)
     }
     if(isClosed) dString = dString.join(" ")+" Z";

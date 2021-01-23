@@ -138,3 +138,4 @@ var intervalID = setInterval(() => {
 }, 2000);
 */
 // gui.close();
+new NotchedSide(300,svg)
