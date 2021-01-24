@@ -89,7 +89,7 @@ var isNotchedFace;
 var isNotchedFace;
 isNotchedFace = true;
 isNotchedFace = false;
-isSingleNotch= true;
+var isSingleNotch= true;
 isSingleNotch= false;
 var notchDepthMM= 4;
 var notchSeparationMM= 7.5;
@@ -138,5 +138,3 @@ var intervalID = setInterval(() => {
 }, 2000);
 */
 // gui.close();
-var notchSide = new NotchedSide(300,svg,true)
-notchSide.update();

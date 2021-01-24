@@ -182,12 +182,13 @@ class NotchedFace{
     }
 }
 class NotchedSide{
-    constructor(l,svg,isMirror){
+    constructor(l,svg,isMirror,isSingleNotch){
         this.sideLength = l;
         this.svg = svg;
         this.isMirror = isMirror;
+        this.isSingleNotch = isSingleNotch;
     }
-    update(){
+    getData(a){
         let l = this.sideLength;
         let svg = this.svg; 
         var notchD = 40;
@@ -197,8 +198,6 @@ class NotchedSide{
         const gHalves = g   * 0.5;
         let modelPoints = [];
         let data = [];
-        this.isSingleNotch=true;
-        this.isSingleNotch=false;
         if(this.isSingleNotch){
             let midLeft = l * 0.5 - gHalves;
             let midRight = l * 0.5 + gHalves;
@@ -256,18 +255,6 @@ class NotchedSide{
                 ]
             }
         }
-        modelPoints
-        console.log("modelPoints", modelPoints)
-        let sidePathString = paths2string(data,false)
-        console.log("sidePathString", sidePathString)
-        var gr = document.createElementNS("http://www.w3.org/2000/svg",'g')
-        svg.appendChild(gr);
-        gr.setAttribute('transform','translate(100,100)')
-        var path = document.createElementNS("http://www.w3.org/2000/svg",'path')
-        gr.appendChild(path);
-        path.setAttribute('d',sidePathString);
-        path.setAttribute('fill','none');
-        path.setAttribute('stroke','red');
-
+        return data;
     }
 }
