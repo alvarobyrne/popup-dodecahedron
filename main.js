@@ -82,7 +82,7 @@ var hingeHeightMM = (hingeWidthMM-2) / 2;
 var hingeHoleSeparationMM = 8;
 var hingeHoleRadiusMM = 1.1;
 var hingeAirXMM = 1.5;
-var hingeAirYMM = 0.0;//-(thicknessMM-hingeWidthMM)*0.5;
+var hingeAirYMM = -0.2;//-(thicknessMM-hingeWidthMM)*0.5;
 var hingeAirSidesYMM = 0.3;//-(thicknessMM-hingeWidthMM)*0.5;
 var hingeHoleAirYMM = 0;
 var isNotchedFace;
@@ -138,4 +138,5 @@ var intervalID = setInterval(() => {
 }, 2000);
 */
 // gui.close();
-new NotchedSide(300,svg)
+var notchSide = new NotchedSide(300,svg,true)
+notchSide.update();
