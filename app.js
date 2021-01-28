@@ -246,12 +246,12 @@ function update() {
     springHole2.setAttribute('width',to_px(2))
     springHole2.setAttribute('transform',`rotate(-36) translate(${polygonHeightPX},${springHolePositionPX})`)
     //////////////////////////////////
+    let notchSeparationPX= to_px(notchSeparationMM)
+    let materialWidthPX= to_px(materialWidthMM)
+    let notchDepthPX= to_px(notchDepthMM)
     if(isNotchedFace){
 
         const notchedFace = new NotchedFace(popupGroupMain, 5, isSingleNotch);
-        let notchDepthPX= to_px(notchDepthMM)
-        let notchSeparationPX= to_px(notchSeparationMM)
-        let materialWidthPX= to_px(materialWidthMM)
         notchedFace.setNotch(notchSeparationPX)
         notchedFace.setForm(5,innerSideLengthPX)
         notchedFace.update(notchDepthPX,materialWidthPX)
@@ -293,32 +293,14 @@ function update() {
         attachmentHole.setAttribute('r',to_px(1.5))
         attachmentHole.setAttribute('transform',`rotate(${36+72*index}) translate(${attachmentRadiusPX})`)
     }
-    const isSingleNotchSide = Math.random()>0.5;
-    for (let index = 0; index < 6; index++) {
-        const isMirror = true;
-        var notchSide = new NotchedSide(to_px(37),svg,isMirror,isSingleNotchSide)
-        var angle = index*60;
-        const data = notchSide.getData(angle);
-        var output = data.map(function(e,i){
-            console.log('e: ', e);
-            // return e.map(point => rotate2D(point,-angleDegree- outerAngleOffset))
-            return e.map(point => rotate2D(point,angle))
-            
-        })
-        console.log('data: ', data);
-        console.log('output: ', output);
-        let sidePathString = paths2string(output,false)
-        console.log("sidePathString", sidePathString)
-        var gr = document.createElementNS("http://www.w3.org/2000/svg",'g')
-        svg.appendChild(gr);
-        gr.setAttribute('transform','translate(200,200)')
-        this.path = document.createElementNS("http://www.w3.org/2000/svg",'path')
-        gr.appendChild(this.path);
-        this.path.setAttribute('d',sidePathString);
-        this.path.setAttribute('fill','none');
-        this.path.setAttribute('stroke','red');
-        
-    }
+    let triangleSideMM = 37;
+    let triangleSidePX = to_px(triangleSideMM);
+    let trX =5;
+    let trY =0;
+    let depth = notchDepthPX;
+    let materialWidth = materialWidthPX;
+    let notchPositionPX = to_px(notchPositionMM);
+    new TriangularFaces(triangleSidePX,trX,trY,depth,materialWidth,notchPositionPX,isSingleNotchSide,popupGroupMain)
 }
 function arrayToPath(points,isClosed=true){
     let dString = ["M "+points[0][0]+" "+points[0][1]];

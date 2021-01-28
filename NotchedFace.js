@@ -182,20 +182,23 @@ class NotchedFace{
     }
 }
 class NotchedSide{
-    constructor(l,svg,isMirror,isSingleNotch){
+    constructor(l,depth,materialWidth,notchPosition,svg,isMirror,isSingleNotch){
         this.sideLength = l;
         this.svg = svg;
         this.isMirror = isMirror;
         this.isSingleNotch = isSingleNotch;
+        this.depth = depth;
+        this.materialWidth = materialWidth;
+        this.notchPosition = notchPosition;
     }
-    getData(a){
+    getData(){
         let l = this.sideLength;
         let svg = this.svg; 
-        var notchD = 40;
-        var g = 10;
-        var s = 20;
+        var notchD = this.notchPosition;
+        var g = this.materialWidth;
+        var s = this.depth;
         const depth   = s;
-        const gHalves = g   * 0.5;
+        const gHalves = g * 0.5;
         let modelPoints = [];
         let data = [];
         if(this.isSingleNotch){
@@ -256,5 +259,56 @@ class NotchedSide{
             }
         }
         return data;
+    }
+}
+class TriangularFaces{
+    constructor(sideLength,trX,trY,depth,materialWidth,notchPosition,isSingleNotchSide,svg){
+        var gr = document.createElementNS("http://www.w3.org/2000/svg",'g')
+        svg.appendChild(gr);
+        gr.setAttribute('transform',`translate(${trX},${trY})`)
+        for (let index = 0; index < 6; index++) {
+            const isMirror = true;
+            let notchSide = new NotchedSide(sideLength,depth,materialWidth,notchPosition,svg,isMirror,isSingleNotchSide)
+            const data = notchSide.getData();
+            var angle = index*60;
+            var output = data.map(function(e,i){
+                return e.map(point => rotate2D(point,angle))
+                
+            })
+            let sidePathString = paths2string(output,false)
+            let path = document.createElementNS("http://www.w3.org/2000/svg",'path')
+            gr.appendChild(path);
+            path.setAttribute('d',sidePathString);
+            path.setAttribute('fill','none');
+            path.setAttribute('stroke','red');
+            
+        }
+        let radius = sideLength;
+        var theta = 60;
+        const outerAngleOffset = 90 + 0.5 * theta;
+        for (let index = 0; index < 6; index++) {
+            let notchSide = new NotchedSide(sideLength,depth,materialWidth,notchPosition,svg,false,isSingleNotchSide)
+            const data = notchSide.getData();
+            const degreePerRadian = Math.PI / 180;
+            var output = data.map(function(e,i){
+                const angleDegree = theta * index //+ outerAngleOffset2;
+                const angle       = angleDegree * degreePerRadian;
+                const x           = Math.cos(angle) * radius;
+                const y           = Math.sin(angle) * radius;
+    
+                // return e.map(point => rotate2D(point,-angleDegree- outerAngleOffset))
+                return e.map(point => rotate2D(point,-angleDegree-outerAngleOffset))
+                .map(p=>translate(p,{X:x,Y:y}))
+                
+            })
+            let sidePathString = paths2string(output,false)
+            let path = document.createElementNS("http://www.w3.org/2000/svg",'path')
+            gr.appendChild(path);
+            path.setAttribute('d',sidePathString);
+            path.setAttribute('fill','none');
+            path.setAttribute('stroke','red');
+    
+        }
+    
     }
 }

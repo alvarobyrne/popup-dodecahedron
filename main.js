@@ -82,21 +82,22 @@ var hingeHeightMM = (hingeWidthMM-2) / 2;
 var hingeHoleSeparationMM = 8;
 var hingeHoleRadiusMM = 1.1;
 var hingeAirXMM = 1.5;
-var hingeAirYMM = -0.2;//-(thicknessMM-hingeWidthMM)*0.5;
-var hingeAirSidesYMM = 0.3;//-(thicknessMM-hingeWidthMM)*0.5;
+var hingeAirYMM = -0.5;//-(thicknessMM-hingeWidthMM)*0.5;
+var hingeAirSidesYMM = -0.5;//-(thicknessMM-hingeWidthMM)*0.5;
 var hingeHoleAirYMM = 0;
-var isNotchedFace;
 var isNotchedFace;
 isNotchedFace = true;
 isNotchedFace = false;
 var isSingleNotch= true;
+var isSingleNotchSide= true;
 isSingleNotch= false;
 var notchDepthMM= 4;
 var notchSeparationMM= 7.5;
 var materialWidthMM= 2.9;
 var attachmentRadiusMM= 20;
 var polygonRadiusMM ='';
-var springHolePositionMM = 0;
+var springHolePositionMM = 6;
+var notchPositionMM = 5;
 update()
 
 
@@ -114,6 +115,7 @@ const guiNotch = gui.addFolder('Notch');
 guiNotch.open();
 guiNotch.add(this, 'isNotchedFace').onChange(update);
 guiNotch.add(this, 'isSingleNotch').onChange(update);
+guiNotch.add(this, 'isSingleNotchSide').onChange(update);
 guiNotch.add(this, 'notchSeparationMM', 0.5, 40, 0.1).onChange(update);
 guiNotch.add(this, 'notchDepthMM', 0.5, 40, 0.5).onChange(update);
 guiNotch.add(this, 'materialWidthMM', 0.5, 40, 0.1).onChange(update);
@@ -126,15 +128,16 @@ guiHinge.add(this, 'hingeHoleRadiusMM', 0.5, 40, 0.5).onChange(update);
 guiHinge.add(this, 'hingeHoleSeparationMM', 0.5, 40, 0.5).onChange(update);
 guiHinge.add(this, 'hingeAirXMM', 0, 40, 0.5).onChange(update);
 guiHinge.add(this, 'hingeAirYMM', -5, 5, 0.1).onChange(update);
-guiHingeSides.add(this, 'hingeAirSidesYMM', 0, 40, 0.1).onChange(update);
+guiHingeSides.add(this, 'hingeAirSidesYMM', -20, 20, 0.1).onChange(update);
 guiHinge.add(this, 'hingeHoleAirYMM', -2, 2, 0.1).onChange(update);
 gui.add(this, 'attachmentRadiusMM', 0, 60, 0.1).onChange(update);
 gui.add(this, 'springHolePositionMM', 0, 60, 0.1).onChange(update);
 gui.add(this, 'polygonRadiusMM').listen()
+gui.add(this, 'notchPositionMM',0,40,0.5).onChange(update);
 /*
 var intervalID = setInterval(() => {
     innerSideLengthMM = 40 +Math.random()*70;
     update();
 }, 2000);
 */
-// gui.close();
+gui.close();
