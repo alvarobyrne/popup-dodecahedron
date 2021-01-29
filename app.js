@@ -227,25 +227,39 @@ function update() {
     centerCircle.classList.add('guide')
     //////////////////////////////////
     let springHolePositionPX = to_px(springHolePositionMM);
-    const springHole1 = document.createElementNS(SVG_NS, 'rect');
-    sideFace.appendChild(springHole1);
+    let springHole1, springHole2;
+    if(isHoleRectangle){
+        springHole1 = document.createElementNS(SVG_NS, 'rect');
+        springHole1.setAttribute('y',to_px(-3))
+        springHole1.setAttribute('x',to_px(-1))
+        springHole1.setAttribute('height',to_px(6))
+        springHole1.setAttribute('width',to_px(2))
+        springHole1.setAttribute('transform',`rotate(36) translate(${polygonHeightPX},${-springHolePositionPX})`)
+        springHole2 = document.createElementNS(SVG_NS, 'rect');
+        springHole2.setAttribute('y',to_px(-3))
+        springHole2.setAttribute('x',to_px(-1))
+        springHole2.setAttribute('height',to_px(6))
+        springHole2.setAttribute('width',to_px(2))
+        springHole2.setAttribute('transform',`rotate(-36) translate(${polygonHeightPX},${springHolePositionPX})`)
+    }else{
+        springHole1 = document.createElementNS(SVG_NS, 'circle');
+        springHole1.setAttribute('cy',0)
+        springHole1.setAttribute('cx',0)
+        springHole1.setAttribute('r',to_px(1.5))
+        springHole1.setAttribute('transform',`rotate(36) translate(${polygonHeightPX},${-springHolePositionPX})`);
+        springHole2 = document.createElementNS(SVG_NS, 'circle');
+        springHole2.setAttribute('cy',0)
+        springHole2.setAttribute('cx',0)
+        springHole2.setAttribute('r',to_px(1.5))
+        springHole2.setAttribute('transform',`rotate(-36) translate(${polygonHeightPX},${springHolePositionPX})`)
+    }
     springHole1.setAttribute('fill','none')
     springHole1.setAttribute('stroke','red')
-    springHole1.setAttribute('y',to_px(-3))
-    springHole1.setAttribute('x',to_px(-1))
-    springHole1.setAttribute('height',to_px(6))
-    springHole1.setAttribute('width',to_px(2))
-    springHole1.setAttribute('transform',`rotate(36) translate(${polygonHeightPX},${-springHolePositionPX})`)
-    const springHole2 = document.createElementNS(SVG_NS, 'rect');
-    sideFace.appendChild(springHole2);
     springHole2.setAttribute('fill','none')
     springHole2.setAttribute('stroke','red')
-    springHole2.setAttribute('y',to_px(-3))
-    springHole2.setAttribute('x',to_px(-1))
-    springHole2.setAttribute('height',to_px(6))
-    springHole2.setAttribute('width',to_px(2))
-    springHole2.setAttribute('transform',`rotate(-36) translate(${polygonHeightPX},${springHolePositionPX})`)
-    //////////////////////////////////
+    sideFace.appendChild(springHole1);
+    sideFace.appendChild(springHole2);
+//////////////////////////////////
     let notchSeparationPX= to_px(notchSeparationMM)
     let materialWidthPX= to_px(materialWidthMM)
     let notchDepthPX= to_px(notchDepthMM)
@@ -293,7 +307,6 @@ function update() {
         attachmentHole.setAttribute('r',to_px(1.5))
         attachmentHole.setAttribute('transform',`rotate(${36+72*index}) translate(${attachmentRadiusPX})`)
     }
-    let triangleSideMM = 37;
     let triangleSidePX = to_px(triangleSideMM);
     let trX =5;
     let trY =0;

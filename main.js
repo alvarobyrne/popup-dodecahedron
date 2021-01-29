@@ -79,11 +79,11 @@ var innerHoleRadiusMM = 1.5;
 var amountPointsInner = 10;
 var hingeWidthMM = 25.4 / 2;
 var hingeHeightMM = (hingeWidthMM-2) / 2;
-var hingeHoleSeparationMM = 8;
+var hingeHoleSeparationMM = 8.2;
 var hingeHoleRadiusMM = 1.1;
 var hingeAirXMM = 1.5;
-var hingeAirYMM = -0.5;//-(thicknessMM-hingeWidthMM)*0.5;
-var hingeAirSidesYMM = -0.5;//-(thicknessMM-hingeWidthMM)*0.5;
+var hingeAirYMM = -0.6;//-(thicknessMM-hingeWidthMM)*0.5;
+var hingeAirSidesYMM = -0.6;//-(thicknessMM-hingeWidthMM)*0.5;
 var hingeHoleAirYMM = 0;
 var isNotchedFace;
 isNotchedFace = true;
@@ -98,6 +98,8 @@ var attachmentRadiusMM= 20;
 var polygonRadiusMM ='';
 var springHolePositionMM = 6;
 var notchPositionMM = 5;
+var triangleSideMM = 66;
+var isHoleRectangle = false;
 update()
 
 
@@ -134,10 +136,12 @@ gui.add(this, 'attachmentRadiusMM', 0, 60, 0.1).onChange(update);
 gui.add(this, 'springHolePositionMM', 0, 60, 0.1).onChange(update);
 gui.add(this, 'polygonRadiusMM').listen()
 gui.add(this, 'notchPositionMM',0,40,0.5).onChange(update);
+gui.add(this, 'triangleSideMM',0,100,0.5).onChange(update);
+gui.add(this, 'isHoleRectangle').onChange(update);
 /*
 var intervalID = setInterval(() => {
     innerSideLengthMM = 40 +Math.random()*70;
     update();
 }, 2000);
 */
-gui.close();
+//gui.close();
