@@ -168,7 +168,7 @@ class NotchedFace{
     }
     notchPrecompute(s,gap){
         const a = Math.PI / this.sidesAmount;
-        const minh = 2*s*Math.tan(a)// see notch-distance.svg at docs folder
+        const minh = 2*s*Math.tan(a); 
         const gHalves = gap / 2;
         const actualMin = minh + gHalves;
         this.notchMin = actualMin;
@@ -260,6 +260,36 @@ class NotchedSide{
         }
         return data;
     }
+    draw(svg,angle){
+        let data = this.getData();
+        var output = data.map(function(e,i){
+            return e.map(point => rotate2D(point,angle))
+        })
+        let sidePathString = paths2string(output,false)
+        let path = document.createElementNS("http://www.w3.org/2000/svg",'path')
+        svg.appendChild(path);
+        path.setAttribute('d',sidePathString);
+        path.setAttribute('fill','none');
+        path.setAttribute('stroke','red');
+    }
+    update(svg,theta,radius,angleDegree){
+        const data = this.getData();
+        const degreePerRadian = Math.PI / 180;
+        const outerAngleOffset = 90 + 0.5 * theta;
+        const angle       = angleDegree * degreePerRadian;
+        const x           = Math.cos(angle) * radius;
+        const y           = Math.sin(angle) * radius;
+        var output = data.map(function(e,i){
+            return e.map(point => rotate2D(point,-angleDegree-outerAngleOffset))
+            .map(p=>translate(p,{X:x,Y:y}))
+        })
+        let sidePathString = paths2string(output,false)
+        let path = document.createElementNS("http://www.w3.org/2000/svg",'path')
+        svg.appendChild(path);
+        path.setAttribute('d',sidePathString);
+        path.setAttribute('fill','none');
+        path.setAttribute('stroke','red');
+    }
 }
 class TriangularFaces{
     constructor(sideLength,trX,trY,depth,materialWidth,notchPosition,isSingleNotchSide,svg){
@@ -269,45 +299,14 @@ class TriangularFaces{
         for (let index = 0; index < 6; index++) {
             const isMirror = true;
             let notchSide = new NotchedSide(sideLength,depth,materialWidth,notchPosition,svg,isMirror,isSingleNotchSide)
-            const data = notchSide.getData();
             var angle = index*60;
-            var output = data.map(function(e,i){
-                return e.map(point => rotate2D(point,angle))
-                
-            })
-            let sidePathString = paths2string(output,false)
-            let path = document.createElementNS("http://www.w3.org/2000/svg",'path')
-            gr.appendChild(path);
-            path.setAttribute('d',sidePathString);
-            path.setAttribute('fill','none');
-            path.setAttribute('stroke','red');
-            
+            notchSide.draw(gr,angle);            
         }
         let radius = sideLength;
         var theta = 60;
-        const outerAngleOffset = 90 + 0.5 * theta;
         for (let index = 0; index < 6; index++) {
             let notchSide = new NotchedSide(sideLength,depth,materialWidth,notchPosition,svg,false,isSingleNotchSide)
-            const data = notchSide.getData();
-            const degreePerRadian = Math.PI / 180;
-            var output = data.map(function(e,i){
-                const angleDegree = theta * index //+ outerAngleOffset2;
-                const angle       = angleDegree * degreePerRadian;
-                const x           = Math.cos(angle) * radius;
-                const y           = Math.sin(angle) * radius;
-    
-                // return e.map(point => rotate2D(point,-angleDegree- outerAngleOffset))
-                return e.map(point => rotate2D(point,-angleDegree-outerAngleOffset))
-                .map(p=>translate(p,{X:x,Y:y}))
-                
-            })
-            let sidePathString = paths2string(output,false)
-            let path = document.createElementNS("http://www.w3.org/2000/svg",'path')
-            gr.appendChild(path);
-            path.setAttribute('d',sidePathString);
-            path.setAttribute('fill','none');
-            path.setAttribute('stroke','red');
-    
+            notchSide.update(gr,theta,radius,theta*index)
         }
     
     }
