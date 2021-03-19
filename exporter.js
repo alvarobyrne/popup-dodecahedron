@@ -2,7 +2,7 @@ const ISNW=typeof nw !== 'undefined';
 if(ISNW){
 
     var fs = require('fs');
-    var path = require('path');
+    var pathNode = require('path');
     var CWD = process.cwd();
     const baseName = 'dihedral';
     const baseDirName = 'tmp';
@@ -10,8 +10,8 @@ if(ISNW){
     // const svgExportPath = 'tmp/dihedral.svg';
     const fileName = baseName +'.'+fileExtension;
     
-    var svgExportPath = path.join(baseDirName, fileName);
-    var tmpSVGPath = path.join(CWD, svgExportPath);
+    var svgExportPath = pathNode.join(baseDirName, fileName);
+    var tmpSVGPath = pathNode.join(CWD, svgExportPath);
     var shell = nw.Shell;
     function pre_exportSVG() {
         // svg.appendChild(singleFacesGroup);
@@ -28,7 +28,7 @@ if(ISNW){
             return svgs.map((svg,i) => {
                 const fileName = baseName + i+'.'+fileExtension;
                 console.log('fileName:- ', fileName);
-                var svgExportPath = path.join(baseDirName, fileName);
+                var svgExportPath = pathNode.join(baseDirName, fileName);
                 console.log('svgExportPath: ', svgExportPath);
                 doExportSVG(svg,svgExportPath)
                 // console.log('svg: ', svg);
@@ -53,7 +53,7 @@ if(ISNW){
         console.log('filez: ', filez);
         filez.forEach(element => {
             console.log('element: ', element);
-            var tmpSVGPath = path.join(CWD, element);
+            var tmpSVGPath = pathNode.join(CWD, element);
             console.log('tmpSVGPath: ', tmpSVGPath);
             
             shell.openItem(tmpSVGPath);
