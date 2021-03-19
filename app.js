@@ -312,8 +312,8 @@ function update() {
     let trY =0;
     let depth = notchDepthPX;
     let materialWidth = materialWidthPX;
-    let notchPositionPX = to_px(notchPositionMM);
-    new TriangularFaces(triangleSidePX,trX,trY,depth,materialWidth,notchPositionPX,isSingleNotchSide,popupGroupMain)
+    let triangleNotchPositionPX = to_px(triangleNotchPositionMM);
+    if(isTriangleSide)new TriangularFaces(triangleSidePX,trX,trY,depth,materialWidth,triangleNotchPositionPX,isTriangleSingleNotchSide,popupGroupMain)
 }
 function arrayToPath(points,isClosed=true){
     let dString = ["M "+points[0][0]+" "+points[0][1]];

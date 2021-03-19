@@ -181,7 +181,7 @@ class NotchedFace{
         contrlrNotchD.updateDisplay();
     }
 }
-class NotchedSide{
+class TriangleNotchedSide{
     constructor(l,depth,materialWidth,notchPosition,svg,isMirror,isSingleNotch){
         this.sideLength = l;
         this.svg = svg;
@@ -292,20 +292,20 @@ class NotchedSide{
     }
 }
 class TriangularFaces{
-    constructor(sideLength,trX,trY,depth,materialWidth,notchPosition,isSingleNotchSide,svg){
+    constructor(sideLength,trX,trY,depth,materialWidth,notchPosition,isTriangleSingleNotchSide,svg){
         var gr = document.createElementNS("http://www.w3.org/2000/svg",'g')
         svg.appendChild(gr);
         gr.setAttribute('transform',`translate(${trX},${trY})`)
         for (let index = 0; index < 6; index++) {
             const isMirror = true;
-            let notchSide = new NotchedSide(sideLength,depth,materialWidth,notchPosition,svg,isMirror,isSingleNotchSide)
+            let notchSide = new TriangleNotchedSide(sideLength,depth,materialWidth,notchPosition,svg,isMirror,isTriangleSingleNotchSide)
             var angle = index*60;
             notchSide.draw(gr,angle);            
         }
         let radius = sideLength;
         var theta = 60;
         for (let index = 0; index < 6; index++) {
-            let notchSide = new NotchedSide(sideLength,depth,materialWidth,notchPosition,svg,false,isSingleNotchSide)
+            let notchSide = new TriangleNotchedSide(sideLength,depth,materialWidth,notchPosition,svg,false,isTriangleSingleNotchSide)
             notchSide.update(gr,theta,radius,theta*index)
         }
     

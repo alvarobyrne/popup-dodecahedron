@@ -89,7 +89,7 @@ var isNotchedFace;
 isNotchedFace = true;
 isNotchedFace = false;
 var isSingleNotch= true;
-var isSingleNotchSide= true;
+var isTriangleSingleNotchSide= true;
 isSingleNotch= false;
 var notchDepthMM= 4;
 var notchSeparationMM= 7.5;
@@ -97,9 +97,10 @@ var materialWidthMM= 2.9;
 var attachmentRadiusMM= 20;
 var polygonRadiusMM ='';
 var springHolePositionMM = 6;
-var notchPositionMM = 5;
+var triangleNotchPositionMM = 5;
 var triangleSideMM = 66;
 var isHoleRectangle = false;
+var isTriangleSide=true;
 update()
 
 
@@ -117,7 +118,6 @@ const guiNotch = gui.addFolder('Notch');
 guiNotch.open();
 guiNotch.add(this, 'isNotchedFace').onChange(update);
 guiNotch.add(this, 'isSingleNotch').onChange(update);
-guiNotch.add(this, 'isSingleNotchSide').onChange(update);
 guiNotch.add(this, 'notchSeparationMM', 0.5, 40, 0.1).onChange(update);
 guiNotch.add(this, 'notchDepthMM', 0.5, 40, 0.5).onChange(update);
 guiNotch.add(this, 'materialWidthMM', 0.5, 40, 0.1).onChange(update);
@@ -135,9 +135,12 @@ guiHinge.add(this, 'hingeHoleAirYMM', -2, 2, 0.1).onChange(update);
 gui.add(this, 'attachmentRadiusMM', 0, 60, 0.1).onChange(update);
 gui.add(this, 'springHolePositionMM', 0, 60, 0.1).onChange(update);
 gui.add(this, 'polygonRadiusMM').listen()
-gui.add(this, 'notchPositionMM',0,40,0.5).onChange(update);
-gui.add(this, 'triangleSideMM',0,100,0.5).onChange(update);
 gui.add(this, 'isHoleRectangle').onChange(update);
+const guiTriangle = gui.addFolder('Triangle 4 icosahedron');
+guiTriangle.add(this, 'isTriangleSide').onChange(update);
+guiTriangle.add(this, 'triangleNotchPositionMM',0,40,0.5).onChange(update);
+guiTriangle.add(this, 'triangleSideMM',0,100,0.5).onChange(update);
+guiTriangle.add(this, 'isTriangleSingleNotchSide').onChange(update);
 /*
 var intervalID = setInterval(() => {
     innerSideLengthMM = 40 +Math.random()*70;
